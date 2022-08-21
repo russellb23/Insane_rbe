@@ -122,7 +122,7 @@ class Lipid:
                 for j, tail in enumerate(self.tail):
                     rl = range(len(tail))
                     struc.extend([(j%2, j//2, taillength-1-i) for i in rl])
-
+                # `*` operator unzips a list: here unzips a list of 3-tuples
                 mx, my, mz = [ (max(i)+min(i))/2 for i in zip(*struc) ]
                 self.coords = [
                     [i, 0.25 * (x - mx), 0.25 * (y - my), z]
@@ -130,6 +130,7 @@ class Lipid:
                 ]
 
         # Scale the x/y based on the lipid's APL - diameter is less than sqrt(APL)
+        # self.coords ==> type :: list of lists
         diam   = kwargs.get("diam", self.diam)
         radius = diam*0.45
         minmax = [ (min(i), max(i)) for i in list(zip(*self.coords))[1:] ]
@@ -157,7 +158,8 @@ class Lipid:
         self.charge = float(charge)
 
 
-class Lipid_List(collections.MutableMapping):
+# class Lipid_List(collections.MutableMapping):
+class Lipid_List(collections.abc.MutableMapping):
     """Container class for lipid definitions"""
 
     def __init__(self):
